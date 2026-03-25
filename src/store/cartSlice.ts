@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { CartItem, Product } from '../types';
 
-
 const loadFromSession = (): CartItem[] => {
   const stored = sessionStorage.getItem('cart');
   return stored ? JSON.parse(stored) : [];
@@ -34,7 +33,7 @@ const cartSlice = createSlice({
       }
       saveToSession(state.items);
     },
-    removeFromCart(state, action: PayloadAction<number>) {
+    removeFromCart(state, action: PayloadAction<string>) { // ← number → string
       state.items = state.items.filter(item => item.id !== action.payload);
       saveToSession(state.items);
     },

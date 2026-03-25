@@ -1,12 +1,10 @@
-// src/types/index.ts
-
 export interface Rating {
   rate: number;
   count: number;
 }
 
 export interface Product {
-  id: number;
+  id: string;  // ← only change
   title: string;
   price: number;
   category: string;

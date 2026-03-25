@@ -1,17 +1,30 @@
 // src/pages/ShoppingCart.tsx
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { removeFromCart, clearCart } from '../store/cartSlice';
+import { placeOrder } from '../firebase/orderService';
+import { useAuth } from '../context/useAuth';
 
 const ShoppingCart: React.FC = () => {
   const { items } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
+  const { currentUser } = useAuth();
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
-    dispatch(clearCart());
-    alert('✅ Checkout successful! Your cart has been cleared.');
+  const handleCheckout = async () => {
+    if (!currentUser) {
+      alert('Please log in to place an order.');
+      return;
+    }
+    try {
+      await placeOrder(currentUser.uid, items);
+      dispatch(clearCart());
+      alert('✅ Order placed successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong placing your order.');
+    }
   };
 
   return (
