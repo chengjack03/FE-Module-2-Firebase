@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 ADD THIS
+import { useNavigate } from "react-router-dom";
 import { getUserData, updateUserProfile, deleteUserAccount } from "../firebase/userService";
 import { useAuth } from "../context/useAuth";
 
 const UserProfile = () => {
   const { currentUser } = useAuth();
-  const navigate = useNavigate(); // 👈 ADD THIS
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
@@ -28,7 +28,7 @@ const UserProfile = () => {
     setMessage("Profile updated!");
   };
 
-  const handleDelete = async () => { // 👈 REPLACE the old handleDelete with this
+  const handleDelete = async () => { 
     if (!currentUser) return;
     if (window.confirm("Are you sure you want to delete your account?")) {
       await deleteUserAccount(currentUser.uid);
