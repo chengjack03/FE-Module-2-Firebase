@@ -19,13 +19,24 @@ import { configureStore } from '@reduxjs/toolkit';
 import cartReducer from '../store/cartSlice';
 import Navbar from '../components/Navbar';
 
-const buildStore = (cartItems = []) =>
+interface CartItem {
+  id: string;
+  title: string;
+  price: number;
+  category: string;
+  description: string;
+  image: string;
+  rating: { rate: number; count: number };
+  quantity: number;
+}
+
+const buildStore = (cartItems: CartItem[] = []) =>
   configureStore({
     reducer: { cart: cartReducer },
     preloadedState: { cart: { items: cartItems } },
   });
 
-const renderNavbar = (cartItems = []) =>
+const renderNavbar = (cartItems: CartItem[] = []) =>
   render(
     <Provider store={buildStore(cartItems)}>
       <MemoryRouter>
@@ -48,7 +59,7 @@ describe('Navbar Component', () => {
   });
 
   test('displays correct cart item count with items in cart', () => {
-    const cartItems = [
+    const cartItems: CartItem[] = [
       {
         id: 'abc123',
         title: 'Test Product',
